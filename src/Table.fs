@@ -10,8 +10,8 @@ module Table =
 
     module TypeMapping =
 
-        type CollumnType = 
-            { SqlName   : string 
+        type CollumnType =
+            { SqlName   : string
               Parameter : string option
               ClrType   : Type }
 
@@ -21,25 +21,25 @@ module Table =
             { SqlName = "SamllInt"         ; Parameter = None          ; ClrType = typedefof<sbyte>          }
             { SqlName = "SamllInt"         ; Parameter = None          ; ClrType = typedefof<int16>          }
             { SqlName = "Int"              ; Parameter = None          ; ClrType = typedefof<uint16>         }
-            { SqlName = "Int"              ; Parameter = None          ; ClrType = typedefof<int32>          }        
+            { SqlName = "Int"              ; Parameter = None          ; ClrType = typedefof<int32>          }
             { SqlName = "BigInt"           ; Parameter = None          ; ClrType = typedefof<uint32>         }
-            { SqlName = "BigInt"           ; Parameter = None          ; ClrType = typedefof<int64>          }        
+            { SqlName = "BigInt"           ; Parameter = None          ; ClrType = typedefof<int64>          }
             { SqlName = "Decimal"          ; Parameter = Some "(20)"   ; ClrType = typedefof<uint64>         }
-                
+
             { SqlName = "Real"             ; Parameter = None          ; ClrType = typedefof<single>         }
             { SqlName = "Float"            ; Parameter = None          ; ClrType = typedefof<float>          }
             { SqlName = "Float"            ; Parameter = None          ; ClrType = typedefof<double>         }
             { SqlName = "Deciaml"          ; Parameter = Some "(29,4)" ; ClrType = typedefof<decimal>        }
-         
+
             { SqlName = "NChar"            ; Parameter = Some "(1)"    ; ClrType = typedefof<char>           }
             { SqlName = "NText"            ; Parameter = None          ; ClrType = typedefof<string>         }
-          
+
             { SqlName = "UniqueIdentifier" ; Parameter = None          ; ClrType = typedefof<Guid>           }
-          
+
             { SqlName = "DateTime2"        ; Parameter = None          ; ClrType = typedefof<DateTime>       }
             { SqlName = "DateTimeOffset"   ; Parameter = None          ; ClrType = typedefof<DateTimeOffset> }
             { SqlName = "Time"             ; Parameter = None          ; ClrType = typedefof<TimeSpan>       }
- 
+
             { SqlName = "VarBinary"        ; Parameter = Some "(max)"  ; ClrType = typedefof<byte array>     }
         ]
 
@@ -49,61 +49,89 @@ module Table =
             { SqlName = "SamllInt"         ; Parameter = None          ; ClrType = typedefof<sbyte>          }
             { SqlName = "SamllInt"         ; Parameter = None          ; ClrType = typedefof<int16>          }
             { SqlName = "Int"              ; Parameter = None          ; ClrType = typedefof<uint16>         }
-            { SqlName = "Int"              ; Parameter = None          ; ClrType = typedefof<int32>          }        
+            { SqlName = "Int"              ; Parameter = None          ; ClrType = typedefof<int32>          }
             { SqlName = "BigInt"           ; Parameter = None          ; ClrType = typedefof<uint32>         }
-            { SqlName = "BigInt"           ; Parameter = None          ; ClrType = typedefof<int64>          }        
+            { SqlName = "BigInt"           ; Parameter = None          ; ClrType = typedefof<int64>          }
             { SqlName = "Decimal"          ; Parameter = Some "(20)"   ; ClrType = typedefof<uint64>         }
-                
+
             { SqlName = "Real"             ; Parameter = None          ; ClrType = typedefof<single>         }
             { SqlName = "Float"            ; Parameter = None          ; ClrType = typedefof<float>          }
             { SqlName = "Float"            ; Parameter = None          ; ClrType = typedefof<double>         }
-            { SqlName = "Deciaml"          ; Parameter = Some "(29,4)" ; ClrType = typedefof<decimal>        }
-         
+            { SqlName = "Decimal"          ; Parameter = Some "(29,4)" ; ClrType = typedefof<decimal>        }
+
             { SqlName = "NChar"            ; Parameter = Some "(1)"    ; ClrType = typedefof<char>           }
             { SqlName = "NVarChar"         ; Parameter = Some "(max)"  ; ClrType = typedefof<string>         }
-          
+
             { SqlName = "UniqueIdentifier" ; Parameter = None          ; ClrType = typedefof<Guid>           }
-          
+
             { SqlName = "DateTime2"        ; Parameter = None          ; ClrType = typedefof<DateTime>       }
             { SqlName = "DateTimeOffset"   ; Parameter = None          ; ClrType = typedefof<DateTimeOffset> }
             { SqlName = "Time"             ; Parameter = None          ; ClrType = typedefof<TimeSpan>       }
- 
+
             { SqlName = "VarBinary"        ; Parameter = Some "(max)"  ; ClrType = typedefof<byte array>     }
+        ]
+
+        let private postgresMappings = [
+            { SqlName = "Boolean"          ; Parameter = None          ; ClrType = typedefof<bool>           }
+            { SqlName = "SmallInt"         ; Parameter = None          ; ClrType = typedefof<int16>          }
+            { SqlName = "SmallInt"         ; Parameter = None          ; ClrType = typedefof<uint16>         }
+            { SqlName = "Integer"          ; Parameter = None          ; ClrType = typedefof<int32>          }
+            { SqlName = "Integer"          ; Parameter = None          ; ClrType = typedefof<uint32>         }
+            { SqlName = "BigInt"           ; Parameter = None          ; ClrType = typedefof<int64>          }
+            { SqlName = "BigInt"           ; Parameter = None          ; ClrType = typedefof<uint64>         }
+
+            { SqlName = "Real"             ; Parameter = None          ; ClrType = typedefof<float>          }
+            { SqlName = "Numeric"          ; Parameter = None          ; ClrType = typedefof<decimal>        }
+            { SqlName = "Money"            ; Parameter = None          ; ClrType = typedefof<decimal>        }
+
+            { SqlName = "Text"             ; Parameter = None          ; ClrType = typedefof<string>         }
+            { SqlName = "Character"        ; Parameter = None          ; ClrType = typedefof<string>         }
+            { SqlName = "Json"             ; Parameter = None          ; ClrType = typedefof<string>         }
+            { SqlName = "Xml "             ; Parameter = None          ; ClrType = typedefof<string>         }
+
+            { SqlName = "Date"             ; Parameter = None          ; ClrType = typedefof<DateTime> }
+            { SqlName = "Date"             ; Parameter = None          ; ClrType = typedefof<DateTimeOffset> }
+            { SqlName = "TimeStamp"        ; Parameter = None          ; ClrType = typedefof<DateTime> }
+            { SqlName = "TimeStamp"        ; Parameter = None          ; ClrType = typedefof<DateTimeOffset> }
+            { SqlName = "Interval"         ; Parameter = None          ; ClrType = typedefof<TimeSpan>       }
+            { SqlName = "Time"             ; Parameter = None          ; ClrType = typedefof<TimeSpan>       }
+
+            { SqlName = "Uuid"             ; Parameter = None          ; ClrType = typedefof<Guid>           }
         ]
 
         let private find mappings clrType = mappings |> List.find (fun m -> m.ClrType = clrType)
 
-        let Find connection clrType = 
+        let Find connection clrType =
             match connection with
             | SqliteConnection _ -> find sqliteMappings clrType
             | SqlServerConnection _ -> find sqlServerMappings clrType
-            | PostgresConnection _ -> failwith "Postgres temporary tables are unsupported"
+            | PostgresConnection _ -> find postgresMappings clrType
 
     module ReflectionExtension =
 
         let GetTypeOfSeq seq =
             match seq |> Seq.tryHead with
             | Some head -> head.GetType()
-            | None -> 
+            | None ->
                 let seqType = seq.GetType()
                 match seqType.IsGenericTypeDefinition with
                 | false -> failwith "The collection type could not be determined, it is not generalized and has no elements"
                 | true  -> seqType.GenericTypeArguments |> Array.head
-        
+
         let (|Nullable|_|) (clrType : Type) =
             if clrType.IsGenericType then
                 let genericTypeDef = clrType.GetGenericTypeDefinition()
-                if  genericTypeDef = typedefof<option<_>> || 
+                if  genericTypeDef = typedefof<option<_>> ||
                     genericTypeDef = typedefof<Nullable<_>> then
-                   
+
                    Some (Array.head clrType.GenericTypeArguments)
                 else
                     None
-            else 
+            else
                 None
 
         let (|Primitive|_|) (clrType : Type) =
-            if clrType.IsPrimitive || 
+            if clrType.IsPrimitive ||
                clrType = typeof<Enum> ||
                clrType = typeof<decimal> ||
                clrType = typeof<string> ||
@@ -120,23 +148,23 @@ module Table =
 
     module Scheme =
 
-        type Column = 
+        type Column =
             { Name      : string
               Type      : TypeMapping.CollumnType
               AllowNull : bool }
 
-        type Table = 
-            { Name    : string 
+        type Table =
+            { Name    : string
               Columns : Column [] }
 
         let private mkColumn connection name clrType =
             match clrType with
             | ReflectionExtension.Nullable contentType ->
-                { Name = name 
+                { Name = name
                   Type = TypeMapping.Find connection contentType
                   AllowNull = true }
-            | _ -> 
-                { Name = name 
+            | _ ->
+                { Name = name
                   Type = TypeMapping.Find connection clrType
                   AllowNull = false }
 
@@ -145,18 +173,18 @@ module Table =
             If the sequence type is a primitive (e.g. this could be a seq of IDs), then only one column named 'Value' will be created.
             In other cases, columns will be created to match the properties of the sequence type
         *)
-        
+
         let private mkColumns connection rows =
             let rowType = ReflectionExtension.GetTypeOfSeq rows
 
             match rowType with
-            | ReflectionExtension.Primitive -> 
+            | ReflectionExtension.Primitive ->
                 [| mkColumn connection "Value" rowType |]
-            | _ -> 
+            | _ ->
                 rowType.GetProperties(
-                    BindingFlags.Instance ||| 
-                    BindingFlags.Public   ||| 
-                    BindingFlags.GetProperty) 
+                    BindingFlags.Instance |||
+                    BindingFlags.Public   |||
+                    BindingFlags.GetProperty)
                 |> Array.map (fun property ->
                     mkColumn connection property.Name property.PropertyType)
 
@@ -164,31 +192,31 @@ module Table =
             match connection with
             | SqliteConnection _ -> nameOfTable
             | SqlServerConnection _ -> sprintf "#%s" nameOfTable
-            | PostgresConnection _ -> failwith "Postgres temporary tables are unsupported"
-        
+            | PostgresConnection _ -> nameOfTable
+
         let Create connection nameOfTable rows =
             { Name    = mkName connection nameOfTable
               Columns = mkColumns connection rows }
 
     module Scripts =
 
-        type Scripts = 
-            { Create : string 
-              Drop   : string }       
+        type Scripts =
+            { Create : string
+              Drop   : string }
 
-        let private toSql (column : Scheme.Column) = 
+        let private toSql (column : Scheme.Column) =
             sprintf "%s %s %s"
-                column.Name                    
+                column.Name
                 (match column.Type.Parameter with
                  | Some parameter -> sprintf "%s%s" column.Type.SqlName parameter
                  | None           -> column.Type.SqlName)
                 (if column.AllowNull then "NULL" else "NOT NULL")
 
-        let private mkSqliteScripts (scheme : Scheme.Table) = 
+        let private mkSqliteScripts (scheme : Scheme.Table) =
             let createScript =
                 sprintf "CREATE TEMP TABLE %s (%s)"
                     scheme.Name
-                    (scheme.Columns 
+                    (scheme.Columns
                         |> Array.map toSql
                         |> String.concat ",")
 
@@ -201,20 +229,33 @@ module Table =
             let createScript =
                 sprintf "CREATE TABLE %s (%s)"
                     scheme.Name
-                    (scheme.Columns 
+                    (scheme.Columns
                         |> Array.map toSql
                         |> String.concat ",")
 
             let dropSCript = sprintf "DROP TABLE %s" scheme.Name
-            
+
             { Create = createScript
               Drop   = dropSCript }
 
-        let Create connection scheme  = 
+        let private mkPostgresScripts (scheme : Scheme.Table) =
+            let createScript =
+                sprintf "CREATE TEMP TABLE %s (%s)"
+                    scheme.Name
+                    (scheme.Columns
+                        |> Array.map toSql
+                        |> String.concat ",")
+
+            let dropSCript = sprintf "DROP TABLE %s" scheme.Name
+
+            { Create = createScript
+              Drop   = dropSCript }
+
+        let Create connection scheme  =
             match connection with
             | SqliteConnection _ -> mkSqliteScripts scheme
             | SqlServerConnection _ -> mkSqlServerScripts scheme
-            | PostgresConnection _ -> failwith "Postgres temporary tables are unsupported"
+            | PostgresConnection _ -> mkPostgresScripts scheme
 
     module Data =
         open Scheme
@@ -229,33 +270,33 @@ module Table =
             let table = new DataTable(scheme.Name)
 
             match scheme with
-            | Values column -> 
+            | Values column ->
                 table.Columns.Add (new DataColumn(column.Name, column.Type.ClrType))
                 for row in rows do table.Rows.Add ([|box row|]) |> ignore
-                table                
-            | Table columns -> 
+                table
+            | Table columns ->
                 columns |> Array.map (fun column -> new DataColumn (column.Name, column.Type.ClrType))
                         |> table.Columns.AddRange
-                
-                for row in rows do 
-                    columns |> Array.map (fun column -> 
+
+                for row in rows do
+                    columns |> Array.map (fun column ->
                                 let value = row.GetType().GetProperty(column.Name).GetValue(row)
-                                if Object.ReferenceEquals(null, value) then 
+                                if Object.ReferenceEquals(null, value) then
                                     (DBNull.Value :> obj)
                                 else
-                                    value) 
+                                    value)
                             |> table.Rows.Add
-                            |> ignore                    
+                            |> ignore
 
                 table
-    
+
     module Operations =
 
         module private BulkInsert =
             let mkInsertScript dataTableName parameterNames =
                 sprintf "INSERT INTO %s VALUES (%s)" dataTableName (String.concat "," parameterNames)
 
-            let mkParameterNames columns = 
+            let mkParameterNames columns =
                 columns |> Seq.cast<DataColumn>
                         |> Seq.map (fun column -> sprintf "@%s" column.ColumnName)
                         |> List.ofSeq
@@ -270,7 +311,7 @@ module Table =
                 command.CommandText <- script
                 command
 
-        let BulkInsert connection (dataTable : DataTable) = 
+        let BulkInsert connection (dataTable : DataTable) =
             let parameterNames = BulkInsert.mkParameterNames dataTable.Columns
             let insertScript   = BulkInsert.mkInsertScript dataTable.TableName parameterNames
             let command        = BulkInsert.mkCommand connection insertScript
@@ -278,27 +319,27 @@ module Table =
             let _parameters =
                 parameterNames |> Seq.map (BulkInsert.mkParameter command)
                                |> List.ofSeq
-            
-            for p in _parameters do 
+
+            for p in _parameters do
                 command.Parameters.Add(p) |> ignore
 
             let parameters = command.Parameters |> Seq.cast<DbParameter>
 
-            for row in dataTable.Rows do                
-                parameters 
-                |> Seq.iter2 (fun parameter value -> parameter.Value <- value) 
+            for row in dataTable.Rows do
+                parameters
+                |> Seq.iter2 (fun parameter value -> parameter.Value <- value)
                 <| row.ItemArray
 
                 command.ExecuteNonQuery() |> ignore
 
-    type Table = 
-        { Name : string 
+    type Table =
+        { Name : string
           Rows : IEnumerable }
 
-    let public Scope 
-        (tables : #seq<Table>) 
-        (values : #seq<Table>) 
-        (specificConnection : Connection) 
+    let public Scope
+        (tables : #seq<Table>)
+        (values : #seq<Table>)
+        (specificConnection : Connection)
         f =
 
         Connection.Scope specificConnection (fun specific connection ->
@@ -311,13 +352,13 @@ module Table =
             | false ->
                 connection.Open()
 
-                let (schemes, create, drop) = 
-                    allTables |> Seq.fold (fun (schemes, create, drop) table -> 
+                let (schemes, create, drop) =
+                    allTables |> Seq.fold (fun (schemes, create, drop) table ->
                         let scheme = Scheme.Create specific table.Name (table.Rows |> Seq.cast<obj>)
                         let scripts = Scripts.Create specific scheme
 
-                        (Seq.append schemes [scheme], 
-                         sprintf "%s;%s" create scripts.Create, 
+                        (Seq.append schemes [scheme],
+                         sprintf "%s;%s" create scripts.Create,
                          sprintf "%s;%s" drop scripts.Drop)
                     ) (Seq.empty<Scheme.Table>, String.Empty, String.Empty)
 
@@ -325,7 +366,7 @@ module Table =
                 command.CommandText <- create
                 command.ExecuteNonQuery() |> ignore
 
-                allTables |> Seq.iter2 (fun scheme table -> 
+                allTables |> Seq.iter2 (fun scheme table ->
                     let rows = table.Rows |> Seq.cast<obj>
                     let rowsIsMissing = Seq.isEmpty rows
 
@@ -333,7 +374,7 @@ module Table =
                     | true  -> ()
                     | false -> Data.Create scheme rows |> Operations.BulkInsert connection
                 ) schemes
-                     
+
                 let r = f connection
 
                 command.CommandText <- drop
