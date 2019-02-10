@@ -77,6 +77,7 @@ module Table =
             match connection with
             | SqliteConnection _ -> find sqliteMappings clrType
             | SqlServerConnection _ -> find sqlServerMappings clrType
+            | PostgresConnection _ -> failwith "Postgres temporary tables are unsupported"
 
     module ReflectionExtension =
 
@@ -126,7 +127,7 @@ module Table =
 
         type Table = 
             { Name    : string 
-              Columns : Column array }    
+              Columns : Column [] }
 
         let private mkColumn connection name clrType =
             match clrType with
@@ -163,6 +164,7 @@ module Table =
             match connection with
             | SqliteConnection _ -> nameOfTable
             | SqlServerConnection _ -> sprintf "#%s" nameOfTable
+            | PostgresConnection _ -> failwith "Postgres temporary tables are unsupported"
         
         let Create connection nameOfTable rows =
             { Name    = mkName connection nameOfTable
@@ -212,6 +214,7 @@ module Table =
             match connection with
             | SqliteConnection _ -> mkSqliteScripts scheme
             | SqlServerConnection _ -> mkSqlServerScripts scheme
+            | PostgresConnection _ -> failwith "Postgres temporary tables are unsupported"
 
     module Data =
         open Scheme
@@ -277,7 +280,7 @@ module Table =
                                |> List.ofSeq
             
             for p in _parameters do 
-                command.Parameters.Add(p)
+                command.Parameters.Add(p) |> ignore
 
             let parameters = command.Parameters |> Seq.cast<DbParameter>
 
