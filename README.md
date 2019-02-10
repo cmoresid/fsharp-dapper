@@ -23,7 +23,7 @@ open FSharp.Data.Dapper
 [<EntryPoint>]
 let main argv =
     OptionHandler.RegisterTypes()
-    
+
     // ...
 ```
 
@@ -43,8 +43,8 @@ module Db =
 
 ## Use query builders [ DataAccess / Users.fs ]
 ```fsharp
-type User = 
-    { Id       : int 
+type User =
+    { Id       : int
       Login    : string
       Password : string }
 
@@ -60,11 +60,11 @@ module Users =
         script "select * from User where Login = @Login limit 1"
     }
 
-    (* NOTE: Using the 'values' operator in the query builder creates 
+    (* NOTE: Using the 'values' operator in the query builder creates
        a temporary table with a single column named 'Value' in the database *)
 
     let findByIDs identificators = Db.querySeqAsync<User> {
-        values "UserID" identificators 
+        values "UserID" identificators
         script """
             select *
             from User as u
@@ -77,14 +77,14 @@ module Users =
         table "ChangedUser" users
         script """
             set (Login, Password) = select (Login, Password
-                from ChangedUser 
-                    where ChangedUser.Id = User.Id) 
-                    
+                from ChangedUser
+                    where ChangedUser.Id = User.Id)
+
             where exists (
-                select 1 
-                from ChangedUser 
+                select 1
+                from ChangedUser
                 where ChangedUser.Id = User.Id
-            ) 
+            )
         """
     }
 ```
@@ -96,21 +96,21 @@ module Users =
 open FSharp.Data.Dapper
 open FSharp.Data.Dapper.Query.Parameters
 
-let tryFindUser 
-    (connection : IDbConnection) 
+let tryFindUser
+    (connection : IDbConnection)
     (userId     : int          ) =
 
     let parameters = Parameters.Create [ "Id" <=> userId ]
     let script     = "select * from Users where Id = @Id"
     let query      = Query (script, parameters)
-    
+
     let result = (query |> QuerySingleAsync<User> <| connection) |> Async.RunSynchronously
-    
+
     // QuerySingleAsync return 'Some' when record is found and 'None' when not found
     match result with
     | Some user -> Some user
     | None      -> None
-```    
+```
 
 ## QueryAsync
 ```fsharp
@@ -120,9 +120,9 @@ let getAllUsers (connection : IDbConnection) =
 
     let script = "select * from Users"
     let query  = Query (script)
-    
+
     let users = (query |> QueryAsync<User> <| connection) |> Async.RunSynchronously
-    
+
     users
 ```
 
@@ -141,10 +141,10 @@ let updateUser
                 Password = @Password
             where Id = @Id
     """
-    
-    let query  = Query(script, user) 
+
+    let query  = Query(script, user)
     let countOfAffectedRows = (query |> ExecuteAsync <| connection) |> Async.RunSynchronously
-    
+
     ()
 ```
 
@@ -154,6 +154,7 @@ The library provides 2 types of temporary tables, the first type with many colum
 At the moment, temporary tables are supported for the following databases:
 - Microsoft SQL Server
 - Sqlite
+- Postgres
 
 ## Temp table with one column
 ```fsharp
@@ -161,10 +162,10 @@ open FSharp.Data.Dapper
 open FSharp.Data.Dapper.TempTable
 open FSharp.Data.Dapper.Query.Parameters
 
-let findPersons 
+let findPersons
     (personIdentificators : int list     )
     (connection           : IDbConnection) =
-    
+
     let tempTable    = TempTable.Create
                         ``Temp table with one column``("PersonIdentificators", "Id", personIdentificators)
                         DatabaseType.Sqlite
@@ -174,9 +175,9 @@ let findPersons
             join PersonIdentificators as pi on
                 p.Id = pi.Id
     """
-    
+
     let query = Query (script, temporaryTables = [tempTable])
-    
+
     (query |> QueryAsync <| connection) |> Async.RunSynchronously
 ```
 
@@ -190,7 +191,7 @@ let savePersons
     (persons    : person list  )
     (connection : IDbConnection) =
 
-    let tempTable = TempTable.Create 
+    let tempTable = TempTable.Create
                         ``Temp table``("TPerson", persons)
                         DatabaseType.Sqlite
 
@@ -200,7 +201,7 @@ let savePersons
             set (Name, Surname) = select (TPerson.Name, TPerson.Surname
                                             from TPerson
                                             where Person.Id = TPerson.Id)
-                                            
+
         where exists (select 1 from TPerson where TPerson.Id = Person.Id)
     """
 
